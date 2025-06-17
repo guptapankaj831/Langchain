@@ -1,0 +1,9 @@
+langchain
+openai
+huggingface_hub
+faiss-cpu
+pypdf
+streamlit
+langchain-community
+tiktoken
+langchain-openai
