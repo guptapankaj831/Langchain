@@ -1,0 +1,62 @@
+Memory is how LangChain agents or chains remember information between runs, especially in multi-turn interactions like chatbots.
+
+Two Broad Categories of Memory
+Chat History Memory:- Used in chatbots to keep track of conversation turns.
+Summary or Entity Memory:- Used to compress long chats or extract entities for long-term context.
+
+Common Memory Classes in LangChain
+1. ConversationBufferMemory
+    Stores all past messages in memory. Useful for short conversations. Can become slow or expensive with long chats.
+
+    from langchain.memory.buffer import ConversationBufferMemory
+    memory = ConversationBufferMemory()
+
+    Think of it as a chat log. Everything the user and assistant says is saved
+
+2. ConversationBufferWindowMemory
+    Keeps only the last N messages. Useful when older context isn't needed.
+
+    memory = ConversationBufferWindowMemory(k=3)
+
+    Keeps just a sliding window of the last few messages.
+
+3. ConversationSummaryMemory
+    Automatically summarizes past chats using LLM. Helps manage long conversations without blowing up token limits.
+
+    from langchain.memory.buffer import ConversationSummaryMemory
+    from langchain.chat_models import ChatOpenAI
+
+    memory = ConversationSummaryMemory(llm=ChatOpenAI())
+
+    It keeps a compressed summary of the chat using LLM.
+
+4. ConversationSummaryBufferMemory
+    Hybrid of buffer + summary. Keeps last N messages plus a summary of earlier ones.
+
+    memory = ConversationSummaryBufferMemory(llm=llm, max_token_limit=500)
+
+    Useful when you want a balance of recency and long-term memory.
+
+5. ConversationEntityMemory
+    Tracks entities in conversation (like names, topics, places). Helpful for CRM-style bots or agents that need to remember key facts.
+
+    from langchain.memory.buffer import ConversationEntityMemory
+    memory = ConversationEntityMemory(llm=ChatOpenAI())
+
+    If a user says “my dog’s name is Max”, it remembers that “Max” is a dog.
+
+
+Memory Stores (Optional)
+    LangChain lets you persist memory across sessions with memory stores:
+        Redis
+        PostgreSQL
+        Chroma
+        In-memory (default)
+
+    For example, using Redis:
+
+    from langchain.memory import RedisChatMessageHistory
+    from langchain.memory import ConversationBufferMemory
+
+    history = RedisChatMessageHistory(session_id="abc123", url="redis://localhost:6379")
+    memory = ConversationBufferMemory(chat_memory=history)

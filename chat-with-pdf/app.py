@@ -4,10 +4,10 @@ Concepts: Document loaders, text splitting, vector stores (like FAISS), retrieva
 """
 
 import streamlit as st
-from langchain.vectorstores import FAISS
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.chains.question_answering import load_qa_chain
-from langchain.llms import OpenAI
+from langchain_community.llms import OpenAI
 from dotenv import load_dotenv
 import os
 
